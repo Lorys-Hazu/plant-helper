@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Plant {
+  id            Int      @id @default(autoincrement())
+  name          String
+  species       String
+  currentStatus PlantStatus @relation(fields: [currentStatusId], references: [id], name: "CurrentStatus")
+  currentStatusId Int
+  statusHistory StatusHistory[]
+}
+
+model PlantStatus {
+  id            Int      @id @default(autoincrement())
+  status        String   @unique
+  description   String?
+  affectedPlants Plant[]  @relation("CurrentStatus")
+  previousStatusHistory StatusHistory[] @relation("PreviousStatus")
+  newStatusHistory     StatusHistory[] @relation("NewStatus")
+}
+
+model StatusHistory {
+  id            Int      @id @default(autoincrement())
+  plant         Plant    @relation(fields: [plantId], references: [id])
+  plantId       Int
+  previousStatus PlantStatus @relation(fields: [previousStatusId], references: [id], name: "PreviousStatus")
+  previousStatusId Int
+  newStatus     PlantStatus @relation(fields: [newStatusId], references: [id], name: "NewStatus")
+  newStatusId   Int
+  changedAt     DateTime
+}
