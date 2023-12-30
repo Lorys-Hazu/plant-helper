@@ -8,29 +8,34 @@ export declare class PlantsController {
         name: string;
         species: string;
         currentStatusId: number;
+        ownerId: number;
     }>;
     findAll(): Promise<{
         id: number;
         name: string;
         species: string;
         currentStatusId: number;
+        ownerId: number;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
         name: string;
         species: string;
         currentStatusId: number;
+        ownerId: number;
     }>;
     update(id: string, updatePlantDto: Prisma.PlantUpdateInput): Promise<{
         id: number;
         name: string;
         species: string;
         currentStatusId: number;
+        ownerId: number;
     }>;
     remove(id: string): Promise<{
         id: number;
         name: string;
         species: string;
         currentStatusId: number;
+        ownerId: number;
     }>;
 }

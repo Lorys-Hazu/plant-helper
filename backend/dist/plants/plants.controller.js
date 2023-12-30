@@ -16,6 +16,7 @@ exports.PlantsController = void 0;
 const common_1 = require("@nestjs/common");
 const plants_service_1 = require("./plants.service");
 const client_1 = require("@prisma/client");
+const passport_1 = require("@nestjs/passport");
 let PlantsController = class PlantsController {
     constructor(plantsService) {
         this.plantsService = plantsService;
@@ -38,6 +39,7 @@ let PlantsController = class PlantsController {
 };
 exports.PlantsController = PlantsController;
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -45,12 +47,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlantsController.prototype, "create", null);
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PlantsController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -58,6 +62,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlantsController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -66,6 +71,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlantsController.prototype, "update", null);
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
