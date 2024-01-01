@@ -19,6 +19,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   plants    Plant[]
+  tasks     Task[]
 }
 
 model Plant {
@@ -30,6 +31,7 @@ model Plant {
   statusHistory StatusHistory[]
   owner         User     @relation(fields: [ownerId], references: [id])
   ownerId       Int
+  tasks         Task[]
 }
 
 model PlantStatus {
@@ -50,4 +52,27 @@ model StatusHistory {
   newStatus     PlantStatus @relation(fields: [newStatusId], references: [id], name: "NewStatus")
   newStatusId   Int
   changedAt     DateTime
+}
+
+model Task {
+  id            Int      @id @default(autoincrement())
+  type          TaskType
+  description   String?
+  dueDate       DateTime
+  completed     Boolean  @default(false)
+  completedAt   DateTime?
+  plant         Plant    @relation(fields: [plantId], references: [id])
+  plantId       Int
+  owner         User     @relation(fields: [ownerId], references: [id])
+  ownerId       Int
+}
+
+enum TaskType {
+  WATER
+  FERTILIZE
+  PRUNE
+  REPOT
+  MIST
+  CLEAN
+  OTHER
 }
