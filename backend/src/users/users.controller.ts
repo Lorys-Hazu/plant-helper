@@ -7,19 +7,18 @@ import { TaskType } from '@prisma/client';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id/tasks')
   getTasks(
     @Param('id') id: string,
     @Query('type') type: TaskType,
     @Query('completed') completed: boolean,
   ) {
+    console.log('type', type);
     return this.usersService.getTasks(+id, { type, completed });
   }
 }

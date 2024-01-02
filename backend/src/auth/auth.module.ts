@@ -8,6 +8,7 @@ import { DatabaseModule } from 'src/database/database.module';
 @Module({
   imports: [
     JwtModule.register({
+      global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
@@ -15,5 +16,6 @@ import { DatabaseModule } from 'src/database/database.module';
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
+  exports: [AuthService, JwtModule, JwtStrategy],
 })
 export class AuthModule {}

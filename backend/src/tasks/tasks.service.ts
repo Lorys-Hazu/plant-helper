@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class TasksService {
   constructor(private readonly db: DatabaseService) {}
+
+  async create(data: Prisma.TaskCreateInput) {
+    return this.db.task.create({ data });
+  }
 
   async complete(id: number) {
     await this.completeTask(id);
