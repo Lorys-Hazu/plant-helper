@@ -6,7 +6,6 @@ import { PlantsModule } from './plants/plants.module';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 import { UsersModule } from './users/users.module';
-import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [DatabaseModule, PlantsModule, AuthModule, TasksModule, UsersModule],
