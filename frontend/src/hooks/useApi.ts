@@ -13,7 +13,6 @@ export const useApi = <T>(
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      console.log("useApi.ts: fetchData: url: ", url, method, body)
       const response: AxiosResponse<T> = await axios({
         method,
         url,
@@ -22,7 +21,6 @@ export const useApi = <T>(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           // Resolve CORS issue
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
         },
       });
       setData(response.data);

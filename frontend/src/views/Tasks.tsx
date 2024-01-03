@@ -1,6 +1,7 @@
 import { Flex } from "antd";
 import { Task } from "../types";
 import { useApi } from "../hooks/useApi";
+import TaskCard from "../components/TaskCard";
 
 const Tasks : React.FC = () => {
   const tasksUrl = 'http://localhost:3000/users/1/tasks';
@@ -9,18 +10,12 @@ const Tasks : React.FC = () => {
   return (
     <Flex
       vertical
-      align="center"
-      justify="center"
-      style={{ minHeight: '100vh' }}
+      style={{ padding: '2rem' }}
+      gap="middle"
     >
-      {loading && <p>Loading...</p>}
       {Boolean(error) && <p>An error has occurred</p>}
-      {tasks?.map((task: Task) => (
-        <div key={task.id}>
-          <h1>{task.type}</h1>
-          <p>{task.description}</p>
-        </div>
-      ))}
+      {loading && <p>Loading...</p>}
+      {tasks?.map((task: Task) => <TaskCard task={task} />)}
     </Flex>
   )
 }

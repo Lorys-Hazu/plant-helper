@@ -1,6 +1,5 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
 import { TaskType } from '@prisma/client';
 
 @Controller('users')
@@ -18,7 +17,6 @@ export class UsersController {
     @Query('type') type: TaskType,
     @Query('completed') completed: boolean,
   ) {
-    console.log('type', type);
     return this.usersService.getTasks(+id, { type, completed });
   }
 }
