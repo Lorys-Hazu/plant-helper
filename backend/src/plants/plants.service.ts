@@ -15,7 +15,10 @@ export class PlantsService {
   }
 
   async findOne(id: number) {
-    return this.db.plant.findUnique({ where: { id } });
+    return this.db.plant.findUnique({
+      where: { id },
+      include: { tasks: true, currentStatus: true, statusHistory: true },
+    });
   }
 
   async update(id: number, updatePlantDto: Prisma.PlantUpdateInput) {
