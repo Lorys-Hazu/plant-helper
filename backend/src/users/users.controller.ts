@@ -19,4 +19,9 @@ export class UsersController {
   ) {
     return this.usersService.getTasks(+id, { type, completed });
   }
+
+  @Get(':id/plants')
+  getPlants(@Param('id') id: string) {
+    return this.usersService.getPlants(+id);
+  }
 }

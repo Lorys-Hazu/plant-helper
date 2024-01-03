@@ -16,13 +16,14 @@ const Navbar = () => {
     }
   ]
 
-  const pathname = useLocation().pathname.replace('/', '');
+  const keys = useLocation().pathname.split('/');
+  console.log(keys);
 
   return (
     <Menu
     mode="horizontal"
     style={{ width: '100%', justifyContent: 'center' }}
-    selectedKeys={[pathname]} 
+    selectedKeys={keys} 
     items={navItems} 
     />
   );

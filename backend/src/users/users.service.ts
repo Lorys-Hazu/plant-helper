@@ -19,4 +19,11 @@ export class UsersService {
     };
     return this.db.task.findMany({ where });
   }
+
+  getPlants(id: number) {
+    return this.db.plant.findMany({
+      where: { ownerId: id },
+      include: { tasks: true, currentStatus: true, statusHistory: true },
+    });
+  }
 }
