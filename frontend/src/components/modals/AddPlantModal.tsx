@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Plant } from "../../types";
 import { plantStatusesOptions } from "../../data/plantStatuses";
 
-const AddPlantModal = ({open, setOpen}: {open: boolean, setOpen: (a: boolean) => void}) => {
+const AddPlantModal = ({open, closeModal}: {open: boolean, closeModal: () => void}) => {
   const plantRequestUrl = `http://localhost:3000/users/1/plants`;
   const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({})
 
@@ -24,9 +24,9 @@ const AddPlantModal = ({open, setOpen}: {open: boolean, setOpen: (a: boolean) =>
 
   useEffect(() => {
     if (data) {
-      setOpen(false);
+      closeModal();
     }
-  }, [data, setOpen]);
+  }, [data, closeModal]);
 
   return (
   <Modal
@@ -34,7 +34,7 @@ const AddPlantModal = ({open, setOpen}: {open: boolean, setOpen: (a: boolean) =>
     open={open}
     centered
     onOk={addPlant}
-    onCancel={() => setOpen(false)}
+    onCancel={closeModal}
     okText="Add"
   >
     <Typography.Text>Fill the form below to add a plant</Typography.Text>

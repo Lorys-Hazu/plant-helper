@@ -8,9 +8,14 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 
 const Plants = () => {
   const plantRequestUrl = `http://localhost:3000/users/1/plants`;
-  const { data: plants, loading, error } = useGet<Plant[]>(plantRequestUrl);
+  const { data: plants, loading, error, refetch } = useGet<Plant[]>(plantRequestUrl);
 
   const [isAddPlantModalOpen, setIsAddPlantModalOpen] = useState(false);
+
+  const onAddPlantModalClose = () => {
+    setIsAddPlantModalOpen(false);
+    refetch()
+  }
 
   if (loading) {
     return <p>Loading...</p>
@@ -27,7 +32,7 @@ const Plants = () => {
             </Flex>
           }
         />
-        <AddPlantModal open={isAddPlantModalOpen} setOpen={setIsAddPlantModalOpen} />
+        <AddPlantModal open={isAddPlantModalOpen} closeModal={onAddPlantModalClose} />
       </>
     );
   }
@@ -41,7 +46,7 @@ const Plants = () => {
       {Boolean(error) && <p>An error has occured</p>}
       {plants && plants.map((plant) => <PlantCard key={plant.id} plant={plant} />)}
       <FloatButton onClick={() => setIsAddPlantModalOpen(true)} icon={<PlusCircleOutlined/>} />
-      <AddPlantModal open={isAddPlantModalOpen} setOpen={setIsAddPlantModalOpen} />
+      <AddPlantModal open={isAddPlantModalOpen} closeModal={onAddPlantModalClose} />
     </Flex>
   )
 }

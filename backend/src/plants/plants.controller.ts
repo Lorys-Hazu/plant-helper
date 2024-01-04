@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { PlantsService } from './plants.service';
 import { Prisma } from '@prisma/client';
+import { StatusTransformationPipe } from 'src/pipes/StatusTransformationPipe';
 
 @Controller('plants')
 export class PlantsController {
@@ -32,7 +33,11 @@ export class PlantsController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updatePlantDto: Prisma.PlantUpdateInput,
+    @Body(StatusTransformationPipe)
+    updatePlantDto: Prisma.PlantUpdateInput & {
+      previousStatusId?: number;
+      newStatusId?: number;
+    },
   ) {
     return this.plantsService.update(+id, updatePlantDto);
   }

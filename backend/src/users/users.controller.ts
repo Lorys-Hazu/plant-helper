@@ -31,7 +31,8 @@ export class UsersController {
     @Param('id') id: string,
     @Body(StatusTransformationPipe)
     createPlantDto: Prisma.PlantCreateInput & {
-      currentStatus: { id: number };
+      previousStatusId?: number;
+      newStatusId?: number;
     },
   ) {
     return this.usersService.addPlant(+id, createPlantDto);

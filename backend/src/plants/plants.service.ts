@@ -21,7 +21,18 @@ export class PlantsService {
     });
   }
 
-  async update(id: number, updatePlantDto: Prisma.PlantUpdateInput) {
+  async update(
+    id: number,
+    updatePlantDto: Prisma.PlantUpdateInput & {
+      previousStatusId?: number;
+      newStatusId?: number;
+    },
+  ) {
+    if (updatePlantDto.currentStatus) {
+      updatePlantDto.currentStatus = {
+        connect: { id: updatePlantDto.newStatusId },
+      };
+    }
     return this.db.plant.update({ where: { id }, data: updatePlantDto });
   }
 

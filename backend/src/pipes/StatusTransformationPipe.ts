@@ -26,11 +26,17 @@ export class StatusTransformationPipe implements PipeTransform {
       },
     });
 
+    const previousStatusId = value.currentStatus?.id;
+
     if (!statusObject) {
       throw new NotFoundException(`Status '${statusValue}' not found`);
     }
 
     // Replace the status field with the complete object
-    return { ...value, currentStatus: statusObject, newStatus: undefined };
+    return {
+      ...value,
+      previousStatusId: previousStatusId,
+      newStatusId: statusObject.id,
+    };
   }
 }

@@ -29,18 +29,23 @@ export class UsersService {
 
   async addPlant(
     id: number,
-    createPlantDto: Prisma.PlantCreateInput & { currentStatus: { id: number } },
+    createPlantDto: Prisma.PlantCreateInput & {
+      previousStatusId?: number;
+      newStatusId?: number;
+    },
   ) {
     try {
       const newPlant = await this.db.plant.create({
         data: {
-          ...createPlantDto,
+          name: createPlantDto.name,
+          species: createPlantDto.species,
           owner: { connect: { id } },
-          currentStatus: { connect: { id: createPlantDto.currentStatus.id } },
+          currentStatus: { connect: { id: createPlantDto.newStatusId } },
         },
       });
       return newPlant;
     } catch (error) {
+      console.error('[ERROR] users service addPlant ---', error);
       if (error instanceof Prisma.PrismaClientValidationError) {
         throw new HttpException('Invalid input data', HttpStatus.BAD_REQUEST);
       }
