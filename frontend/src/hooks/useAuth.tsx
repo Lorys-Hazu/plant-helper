@@ -29,7 +29,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   }
 
   useEffect(() => {
-    console.log("loginData", loginData)
     if (loginData) {
       setUser(loginData);
     }

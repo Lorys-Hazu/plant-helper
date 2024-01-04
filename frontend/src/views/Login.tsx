@@ -28,7 +28,7 @@ const Login = () => {
       >
         <Typography.Title level={1}>Login</Typography.Title>
         <Input placeholder="email" value={loginInfos.email} onChange={handleChange} name="email" />
-        <Input placeholder="password" value={loginInfos.password} onChange={handleChange} name="password" />
+        <Input placeholder="password" type="password" value={loginInfos.password} onChange={handleChange} name="password" />
         <Button onClick={() => login(loginInfos.email, loginInfos.password)}>Login</Button>
         <Link to="/register" >
           <Button

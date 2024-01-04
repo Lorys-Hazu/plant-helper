@@ -27,7 +27,7 @@ const Register = () => {
         <Typography.Title level={1}>Register</Typography.Title>
         <Input placeholder="name" value={registerInfos.name} onChange={handleChange} name="name" />
         <Input placeholder="email" value={registerInfos.email} onChange={handleChange} name="email" />
-        <Input placeholder="password" value={registerInfos.password} onChange={handleChange} name="password" />
+        <Input placeholder="password" type="password" value={registerInfos.password} onChange={handleChange} name="password" />
         <Button onClick={() => register(registerInfos.email, registerInfos.password)}>Login</Button>
       </Flex>
     </Flex>
