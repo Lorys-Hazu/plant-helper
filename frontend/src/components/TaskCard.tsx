@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { Plant, Task } from '../types'
 import { Badge, Button, Card } from 'antd';
-import { CheckCircleFilled } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
 import { usePatch } from '../hooks/usePatch';
 import EditPlantModal from './modals/EditPlantModal';
 import { useModal } from '../hooks/useModals';
@@ -73,9 +73,9 @@ const TaskCard = ({ task, reload, plant }: { task: Task, reload: () => void, pla
         hoverable={false}
       >
         <Button
-          type="primary"
+          type="default"
           shape="circle"
-          icon={<CheckCircleFilled />} 
+          icon={<CheckOutlined />} 
           onClick={handleCompleteTask}
           disabled={task.completed}
         />

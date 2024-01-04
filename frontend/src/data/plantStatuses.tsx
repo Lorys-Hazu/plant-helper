@@ -1,3 +1,5 @@
+import { AlertOutlined, FrownOutlined, HeartOutlined, QuestionOutlined, RiseOutlined } from "@ant-design/icons";
+
 export const plantStatusesOptions = [
   {
     label: 'Healthy',
@@ -37,3 +39,18 @@ export const plantStatusesOptions = [
     ]
   }
 ];
+
+export const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'HEALTHY':
+      return <HeartOutlined />;
+    case 'SICK': 
+      return <FrownOutlined />;
+    case 'GROWTH & DEVELOPMENT':
+      return <RiseOutlined />;
+    case 'MAINTENANCE NEEDS':
+      return <AlertOutlined />;
+    default:
+      return <QuestionOutlined />;
+  }
+}
