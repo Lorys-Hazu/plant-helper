@@ -7,6 +7,8 @@ import { usePatch } from '../hooks/usePatch';
 const TaskCard = ({ task, reload }: { task: Task, reload: () => void }) => {
   const completeTaskUrl = `http://localhost:3000/tasks/${task.id}/complete`;
   const { patchData, data } = usePatch();
+
+  console.log(task)
   
   const handleCompleteTask = async () => {
     patchData(completeTaskUrl, {});

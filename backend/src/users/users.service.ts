@@ -17,20 +17,11 @@ export class UsersService {
   }
 
   async getTasks(id: number, params: { type?: TaskType; completed?: boolean }) {
-    const { type, completed } = params;
-    const where: Prisma.TaskWhereInput = {
-      ownerId: id,
-      type,
-      completed,
-    };
-    return this.db.task.findMany({ where });
+    return await this.tasksService.getTasksForUser(id, params);
   }
 
   async getPlants(id: number) {
-    return this.db.plant.findMany({
-      where: { ownerId: id },
-      include: { tasks: true, currentStatus: true, statusHistory: true },
-    });
+    return await this.plantsService.getPlantsForUser(id);
   }
 
   async addPlant(

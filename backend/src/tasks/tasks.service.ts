@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Task } from '@prisma/client';
+import { Prisma, Task, TaskType } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -28,6 +28,17 @@ export class TasksService {
         }),
       ),
     );
+  }
+
+  async getTasksForUser(
+    id: number,
+    params: { type?: TaskType; completed?: boolean },
+  ) {
+    const where: Prisma.TaskWhereInput = { ownerId: id };
+    if (params.type) where.type = params.type;
+    if (params.completed != undefined) where.completed = params.completed;
+
+    return this.db.task.findMany({ where });
   }
 
   async complete(id: number) {

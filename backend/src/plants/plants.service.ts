@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Plant, Prisma } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 
 @Injectable()
@@ -41,6 +41,15 @@ export class PlantsService {
 
   async findAll() {
     return this.db.plant.findMany();
+  }
+
+  async getPlantsForUser(id: number) {
+    const plants: Plant[] = await this.db.plant.findMany({
+      where: { ownerId: id },
+      include: { tasks: true, currentStatus: true, statusHistory: true },
+    });
+
+    return plants;
   }
 
   async findOne(id: number) {
