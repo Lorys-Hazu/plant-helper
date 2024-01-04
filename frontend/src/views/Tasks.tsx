@@ -5,7 +5,7 @@ import TaskCard from "../components/TaskCard";
 import { useMemo } from "react";
 
 const Tasks : React.FC = () => {
-  const tasksUrl = 'http://localhost:3000/users/1/tasks?completed=false';
+  const tasksUrl = 'http://localhost:3000/users/2/tasks?completed=false';
   const { data: tasks, error, loading, refetch } = useGet<Task[]>(tasksUrl);
 
   const ordererTasks: Task[] = useMemo(() => tasks?.sort(

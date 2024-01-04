@@ -8,7 +8,7 @@ import { useModal } from '../hooks/useModals';
 import AddPlantModal from "../components/modals/AddPlantModal";
 
 const Plants = () => {
-  const plantRequestUrl = `http://localhost:3000/users/1/plants`;
+  const plantRequestUrl = `http://localhost:3000/users/2/plants`;
   const { data: plants, loading, error, refetch } = useGet<Plant[]>(plantRequestUrl);
 
   const {addModal, closeModal} = useModal();

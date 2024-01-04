@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { Plant, Task } from '../types'
-import { Badge, Button, Card } from 'antd';
+import { Badge, Button, Card, Typography } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { usePatch } from '../hooks/usePatch';
 import EditPlantModal from './modals/EditPlantModal';
 import { useModal } from '../hooks/useModals';
+import { Link } from 'react-router-dom';
 
 const TaskCard = ({ task, reload, plant }: { task: Task, reload: () => void, plant?: Plant }) => {
   const completeTaskUrl = `http://localhost:3000/tasks/${task.id}/complete`;
@@ -63,13 +64,22 @@ const TaskCard = ({ task, reload, plant }: { task: Task, reload: () => void, pla
         />
       }>
       <Card.Grid 
-        style={{width: "75%", boxShadow: "none"}} 
+        style={{width: plant ? "33%" : "66%", boxShadow: "none"}} 
         hoverable={false}
         >
         <p>{task.description}</p>
       </Card.Grid>
+      {plant && <Card.Grid 
+        style={{width: "33%", boxShadow: "none", display: "flex", justifyContent: "center", textAlign: "center"}} 
+        hoverable={false}
+        >
+        <Link to={`/plants/${plant.id}`}>
+          <Typography.Title level={5}>{plant.name}</Typography.Title>
+          <Button type="text">Go to plant details</Button>
+        </Link>
+      </Card.Grid>}
       <Card.Grid 
-        style={{width: "25%", boxShadow: "none", display: "flex", justifyContent: "center", alignItems: "center"}} 
+        style={{width: "33%", boxShadow: "none", display: "flex", justifyContent: "center", alignItems: "center"}} 
         hoverable={false}
       >
         <Button

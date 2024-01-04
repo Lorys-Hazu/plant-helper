@@ -10,7 +10,7 @@ export type AddPlantModalProps = {
 }
 
 const AddPlantModal = ({open, closeModal}: AddPlantModalProps) => {
-  const plantRequestUrl = `http://localhost:3000/users/1/plants`;
+  const plantRequestUrl = `http://localhost:3000/users/2/plants`;
   const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({newStatus: "HEALTHY"})
 
   const handleSelectChange = (value: string) => {
