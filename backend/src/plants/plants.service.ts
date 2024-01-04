@@ -28,10 +28,20 @@ export class PlantsService {
       newStatusId?: number;
     },
   ) {
-    if (updatePlantDto.currentStatus) {
+    if (updatePlantDto.newStatusId) {
       updatePlantDto.currentStatus = {
         connect: { id: updatePlantDto.newStatusId },
       };
+
+      if (updatePlantDto.previousStatusId) {
+        updatePlantDto.statusHistory = {
+          create: {
+            previousStatusId: updatePlantDto.previousStatusId,
+            newStatusId: updatePlantDto.newStatusId,
+            changedAt: new Date(),
+          },
+        };
+      }
     }
     return this.db.plant.update({ where: { id }, data: updatePlantDto });
   }

@@ -47,8 +47,8 @@ model StatusHistory {
   id            Int      @id @default(autoincrement())
   plant         Plant    @relation(fields: [plantId], references: [id])
   plantId       Int
-  previousStatus PlantStatus @relation(fields: [previousStatusId], references: [id], name: "PreviousStatus")
-  previousStatusId Int
+  previousStatus PlantStatus? @relation(fields: [previousStatusId], references: [id], name: "PreviousStatus")
+  previousStatusId Int?
   newStatus     PlantStatus @relation(fields: [newStatusId], references: [id], name: "NewStatus")
   newStatusId   Int
   changedAt     DateTime

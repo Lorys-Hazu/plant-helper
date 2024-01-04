@@ -41,6 +41,13 @@ export class UsersService {
           species: createPlantDto.species,
           owner: { connect: { id } },
           currentStatus: { connect: { id: createPlantDto.newStatusId } },
+          statusHistory: {
+            create: {
+              previousStatusId: null,
+              newStatusId: createPlantDto.newStatusId,
+              changedAt: new Date(),
+            },
+          },
         },
       });
       return newPlant;
