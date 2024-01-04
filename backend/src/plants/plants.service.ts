@@ -6,8 +6,37 @@ import { DatabaseService } from '../database/database.service';
 export class PlantsService {
   constructor(private readonly db: DatabaseService) {}
 
-  async create(createPlantDto: Prisma.PlantCreateInput) {
-    return this.db.plant.create({ data: createPlantDto });
+  async create(
+    createPlantDto: Prisma.PlantCreateInput,
+    additionalInfos?: { ownerId: number; newStatusId: number },
+  ) {
+    const requestData = {
+      name: createPlantDto.name,
+      species: createPlantDto.species,
+      owner: { connect: { id: additionalInfos.ownerId } },
+      currentStatus: undefined,
+      statusHistory: undefined,
+    };
+
+    if (additionalInfos.newStatusId) {
+      requestData.currentStatus = {
+        connect: { id: additionalInfos.newStatusId },
+      };
+
+      requestData.statusHistory = {
+        create: {
+          previousStatusId: null,
+          newStatusId: additionalInfos.newStatusId,
+          changedAt: new Date(),
+        },
+      };
+    }
+
+    const createdPlant = await this.db.plant.create({
+      data: requestData,
+    });
+
+    return createdPlant;
   }
 
   async findAll() {
@@ -37,13 +66,20 @@ export class PlantsService {
       newStatusId?: number;
     },
   ) {
+    const updateData = {
+      name: updatePlantDto.name,
+      species: updatePlantDto.species,
+      currentStatus: undefined,
+      statusHistory: undefined,
+    };
+
     if (updatePlantDto.newStatusId) {
-      updatePlantDto.currentStatus = {
+      updateData.currentStatus = {
         connect: { id: updatePlantDto.newStatusId },
       };
 
       if (updatePlantDto.previousStatusId) {
-        updatePlantDto.statusHistory = {
+        updateData.statusHistory = {
           create: {
             previousStatusId: updatePlantDto.previousStatusId,
             newStatusId: updatePlantDto.newStatusId,
@@ -52,7 +88,7 @@ export class PlantsService {
         };
       }
     }
-    return this.db.plant.update({ where: { id }, data: updatePlantDto });
+    return this.db.plant.update({ where: { id }, data: updateData });
   }
 
   async remove(id: number) {

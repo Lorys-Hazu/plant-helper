@@ -1,14 +1,17 @@
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Plant } from "../types";
 import { useGet } from "../hooks/useGet";
-import { Button, Divider, Empty, Flex, Typography } from "antd";
+import { Button, Divider, Empty, Flex, FloatButton, Typography } from "antd";
 import StatusHistorySlider from "../components/StatusHistorySlider";
 import TaskCard from "../components/TaskCard";
-import { LeftOutlined } from "@ant-design/icons";
+import { EditOutlined, LeftOutlined } from "@ant-design/icons";
+import EditPlantModal from "../components/modals/EditPlantModal";
 
 const PlantDetails = () => {
     const { plantId } = useParams();
     const { data: plant, loading, error, refetch } = useGet<Plant>(`http://localhost:3000/plants/${plantId}`);
+    const [isEditPlantModalOpen, setIsEditPlantModalOpen] = useState(false);
 
     if (loading) {
         return <p>Loading...</p>
@@ -23,6 +26,11 @@ const PlantDetails = () => {
     }
 
     const currentTasks = plant.tasks.filter((task) => !task.completed);
+
+    const handleEditModalClose = () => {
+      setIsEditPlantModalOpen(false);
+      refetch();
+    }
 
     return (
       <Flex vertical style={{marginTop: "8px"}}>
@@ -45,7 +53,8 @@ const PlantDetails = () => {
               <TaskCard key={task.id} task={task} reload={refetch}/>
             ))}
           </Flex>
-
+          <FloatButton onClick={() => setIsEditPlantModalOpen(true)} icon={<EditOutlined />} />
+          <EditPlantModal open={isEditPlantModalOpen} closeModal={handleEditModalClose} plant={plant} />
         </Flex>
     )
 }

@@ -2,12 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, TaskType } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { TasksService } from 'src/tasks/tasks.service';
+import { PlantsService } from 'src/plants/plants.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly db: DatabaseService,
     private readonly tasksService: TasksService,
+    private readonly plantsService: PlantsService,
   ) {}
 
   async findOne(id: number) {
@@ -39,20 +41,9 @@ export class UsersService {
     },
   ) {
     try {
-      const newPlant = await this.db.plant.create({
-        data: {
-          name: createPlantDto.name,
-          species: createPlantDto.species,
-          owner: { connect: { id } },
-          currentStatus: { connect: { id: createPlantDto.newStatusId } },
-          statusHistory: {
-            create: {
-              previousStatusId: null,
-              newStatusId: createPlantDto.newStatusId,
-              changedAt: new Date(),
-            },
-          },
-        },
+      const newPlant = await this.plantsService.create(createPlantDto, {
+        ownerId: id,
+        newStatusId: createPlantDto.newStatusId,
       });
 
       await this.tasksService.intializePlantTasks(newPlant.id, id);
