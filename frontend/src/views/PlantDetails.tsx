@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { Plant } from "../types";
 import { useGet } from "../hooks/useGet";
 import { Button, Divider, Empty, Flex, Typography } from "antd";
+import StatusHistorySlider from "../components/StatusHistorySlider";
 import TaskCard from "../components/TaskCard";
 import { LeftOutlined } from "@ant-design/icons";
 
@@ -36,7 +37,7 @@ const PlantDetails = () => {
             <Typography.Title level={4}>Current Status: {plant.currentStatus.subStatus || plant.currentStatus.status}</Typography.Title>
           </Divider>
           <Typography.Title level={5}>History</Typography.Title>
-          {/* HISTORY SLIDER */}
+          <StatusHistorySlider history={plant.statusHistory} />
           <Typography.Title level={5}>Todo Tasks</Typography.Title>
           <Flex vertical>
             {currentTasks.length === 0 && <Empty description="No tasks to do" />}

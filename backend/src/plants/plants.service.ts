@@ -17,7 +17,16 @@ export class PlantsService {
   async findOne(id: number) {
     return this.db.plant.findUnique({
       where: { id },
-      include: { tasks: true, currentStatus: true, statusHistory: true },
+      include: {
+        tasks: true,
+        currentStatus: true,
+        statusHistory: {
+          include: {
+            previousStatus: true,
+            newStatus: true,
+          },
+        },
+      },
     });
   }
 
