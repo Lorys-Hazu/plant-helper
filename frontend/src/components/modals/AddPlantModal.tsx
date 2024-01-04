@@ -6,7 +6,7 @@ import { plantStatusesOptions } from "../../data/plantStatuses";
 
 const AddPlantModal = ({open, closeModal}: {open: boolean, closeModal: () => void}) => {
   const plantRequestUrl = `http://localhost:3000/users/1/plants`;
-  const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({})
+  const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({newStatus: "HEALTHY"})
 
   const handleSelectChange = (value: string) => {
     setPlantData({...plantData, newStatus: value});
@@ -46,7 +46,7 @@ const AddPlantModal = ({open, closeModal}: {open: boolean, closeModal: () => voi
     <Input placeholder="Plant Species" onChange={handleChange} name="species" value={plantData.species}/>
     <Typography.Text>Status</Typography.Text>
     <Select
-      defaultValue="HEALTHY"
+      value={plantData.newStatus}
       onChange={handleSelectChange}
       options={plantStatusesOptions}
       style={{ width: "100%" }}

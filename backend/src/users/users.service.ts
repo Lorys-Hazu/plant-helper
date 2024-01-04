@@ -1,10 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, TaskType } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly tasksService: TasksService,
+  ) {}
 
   async findOne(id: number) {
     return this.db.user.findUnique({ where: { id } });
@@ -50,6 +54,8 @@ export class UsersService {
           },
         },
       });
+
+      await this.tasksService.intializePlantTasks(newPlant.id, id);
       return newPlant;
     } catch (error) {
       console.error('[ERROR] users service addPlant ---', error);

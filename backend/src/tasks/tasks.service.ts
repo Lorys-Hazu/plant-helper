@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Task } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -10,16 +10,38 @@ export class TasksService {
     return this.db.task.create({ data });
   }
 
+  async intializePlantTasks(plantId: number, ownerId: number) {
+    const tasks: Pick<Task, 'type' | 'dueDate'>[] = [
+      { type: 'WATER', dueDate: new Date() },
+      { type: 'FERTILIZE', dueDate: new Date() },
+      { type: 'REPOT', dueDate: new Date() },
+    ];
+
+    return Promise.all(
+      tasks.map((task) =>
+        this.db.task.create({
+          data: {
+            ...task,
+            plant: { connect: { id: plantId } },
+            owner: { connect: { id: ownerId } },
+          },
+        }),
+      ),
+    );
+  }
+
   async complete(id: number) {
     await this.completeTask(id);
     await this.setupFollowingTask(id);
+    return this.db.task.findUnique({ where: { id } });
   }
 
   async completeTask(id: number) {
-    return this.db.task.update({
+    const updatedTask = await this.db.task.update({
       where: { id },
       data: { completed: true, completedAt: new Date() },
     });
+    return updatedTask;
   }
 
   async setupFollowingTask(id: number) {
@@ -36,13 +58,13 @@ export class TasksService {
   getNextDueAt(type: string, dueDate: Date) {
     const nextDueAt = new Date(dueDate);
     switch (type) {
-      case 'water':
+      case 'WATER':
         nextDueAt.setDate(nextDueAt.getDate() + 7);
         break;
-      case 'fertilize':
+      case 'FERTILIZE':
         nextDueAt.setMonth(nextDueAt.getMonth() + 1);
         break;
-      case 'repot':
+      case 'REPOT':
         nextDueAt.setMonth(nextDueAt.getMonth() + 12);
         break;
       default:

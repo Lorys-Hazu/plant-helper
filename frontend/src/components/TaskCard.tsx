@@ -12,6 +12,21 @@ const TaskCard = ({ task, reload }: { task: Task, reload: () => void }) => {
     patchData(completeTaskUrl, {});
   }
 
+  const getBadgeColor = (dueDate: Date, isCompleted: boolean) => {
+    if (isCompleted) {
+      return "grey";
+    }
+    const today = new Date();
+    const due = new Date(dueDate);
+    if (due < today) {
+      return "red";
+    } else if (due < new Date(today.setDate(today.getDate() + 7))) {
+      return "orange";
+    } else {
+      return "green";
+    }
+  }
+
   useEffect(() => {
     if (data) {
       reload();
@@ -19,7 +34,15 @@ const TaskCard = ({ task, reload }: { task: Task, reload: () => void }) => {
   }, [data, reload]);
 
   return (
-    <Card size="small" title={task.type} extra={<Badge count={new Date(task.dueDate).toLocaleDateString("fr-FR")}/>}>
+    <Card 
+      size="small" 
+      title={task.type} 
+      extra={
+        <Badge 
+          count={new Date(task.dueDate).toLocaleDateString("fr-FR")}
+          color={getBadgeColor(task.dueDate, task.completed)}
+        />
+      }>
       <Card.Grid 
         style={{width: "75%", boxShadow: "none"}} 
         hoverable={false}
