@@ -16,9 +16,12 @@ export class UsersController {
   getTasks(
     @Param('id') id: string,
     @Query('type') type: TaskType,
-    @Query('completed') completed: boolean,
+    @Query('completed') completed: string,
   ) {
-    return this.usersService.getTasks(+id, { type, completed });
+    return this.usersService.getTasks(+id, {
+      type,
+      completed: Boolean(JSON.parse(completed)),
+    });
   }
 
   @Get(':id/plants')

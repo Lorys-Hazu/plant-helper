@@ -4,7 +4,7 @@ import { useGet } from "../hooks/useGet";
 import TaskCard from "../components/TaskCard";
 
 const Tasks : React.FC = () => {
-  const tasksUrl = 'http://localhost:3000/users/1/tasks';
+  const tasksUrl = 'http://localhost:3000/users/1/tasks?completed=false';
   const { data: tasks, error, loading, refetch } = useGet<Task[]>(tasksUrl);
 
   if (loading) {
@@ -23,7 +23,10 @@ const Tasks : React.FC = () => {
     >
       {Boolean(error) && <p>An error has occurred</p>}
       {loading && <p>Loading...</p>}
-      {tasks?.map((task: Task) => <TaskCard key={task.id} task={task} reload={refetch}/>)}
+      {tasks?.sort(
+        (a,b) => new Date(b.dueDate).getMilliseconds() - new Date(a.dueDate).getMilliseconds())
+        .map((task: Task) => <TaskCard key={task.id} task={task} reload={refetch}/>)
+      }
     </Flex>
   )
 }
