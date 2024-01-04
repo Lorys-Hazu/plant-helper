@@ -6,6 +6,7 @@ import { Plant } from "../types"
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { useModal } from '../hooks/useModals';
 import AddPlantModal from "../components/modals/AddPlantModal";
+import Loading from "../components/Loading";
 
 const Plants = () => {
   const plantRequestUrl = `http://localhost:3000/users/2/plants`;
@@ -23,12 +24,12 @@ const Plants = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loading />
   }
 
-  if (!plants) {
+  if (plants?.length === 0 && !error && !loading) {
     return ( 
-      <>
+      <Flex vertical justify="center" align="center" style={{height: "100%"}}>
         <Empty 
           description={
             <Flex vertical>
@@ -37,7 +38,7 @@ const Plants = () => {
             </Flex>
           }
         />
-      </>
+      </Flex>
     );
   }
 

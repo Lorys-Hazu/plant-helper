@@ -3,6 +3,7 @@ import { Task } from "../types";
 import { useGet } from "../hooks/useGet";
 import TaskCard from "../components/TaskCard";
 import { useMemo } from "react";
+import Loading from "../components/Loading";
 
 const Tasks : React.FC = () => {
   const tasksUrl = 'http://localhost:3000/users/2/tasks?completed=false';
@@ -13,11 +14,11 @@ const Tasks : React.FC = () => {
   ) || [], [tasks]);
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loading />
   }
 
-  if (!tasks) {
-    return <Empty description="No tasks to do" />
+  if (tasks?.length === 0) {
+    return <Flex vertical justify="center" align="center" style={{height: "100%"}}><Empty description="No tasks to do" /></Flex>
   }
 
   return (
@@ -27,7 +28,6 @@ const Tasks : React.FC = () => {
       gap="middle"
     >
       {Boolean(error) && <p>An error has occurred</p>}
-      {loading && <p>Loading...</p>}
       {ordererTasks
         .map((task: Task) => <TaskCard key={task.id} task={task} reload={refetch} plant={task.plant} />)
       }

@@ -7,6 +7,7 @@ import TaskCard from "../components/TaskCard";
 import { EditOutlined, LeftOutlined } from "@ant-design/icons";
 import EditPlantModal from "../components/modals/EditPlantModal";
 import { useModal } from "../hooks/useModals";
+import Loading from "../components/Loading";
 
 const PlantDetails = () => {
     const { plantId } = useParams();
@@ -14,7 +15,7 @@ const PlantDetails = () => {
     const { addModal, closeModal } = useModal();
 
     if (loading) {
-        return <p>Loading...</p>
+        return <Loading />;
     }
 
     if (error) {
