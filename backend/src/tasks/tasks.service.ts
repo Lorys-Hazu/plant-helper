@@ -11,10 +11,14 @@ export class TasksService {
   }
 
   async intializePlantTasks(plantId: number, ownerId: number) {
-    const tasks: Pick<Task, 'type' | 'dueDate'>[] = [
-      { type: 'WATER', dueDate: new Date() },
-      { type: 'FERTILIZE', dueDate: new Date() },
-      { type: 'REPOT', dueDate: new Date() },
+    const tasks: Pick<Task, 'type' | 'dueDate' | 'description'>[] = [
+      { type: 'WATER', dueDate: new Date(), description: 'Water your plant' },
+      {
+        type: 'FERTILIZE',
+        dueDate: new Date(),
+        description: 'Fertilize your plant',
+      },
+      { type: 'REPOT', dueDate: new Date(), description: 'Repot your plant' },
     ];
 
     return Promise.all(
@@ -38,7 +42,12 @@ export class TasksService {
     if (params.type) where.type = params.type;
     if (params.completed != undefined) where.completed = params.completed;
 
-    return this.db.task.findMany({ where });
+    return this.db.task.findMany({
+      where,
+      include: {
+        plant: { include: { statusHistory: true, currentStatus: true } },
+      },
+    });
   }
 
   async complete(id: number) {
@@ -58,11 +67,11 @@ export class TasksService {
   async setupFollowingTask(id: number) {
     const task = await this.db.task.findUnique({ where: { id } });
     if (!task) return;
-    const { type, dueDate, plantId, ownerId } = task;
+    const { type, dueDate, plantId, ownerId, description } = task;
     const nextDueAt = this.getNextDueAt(type, dueDate);
     if (!nextDueAt) return;
     return this.db.task.create({
-      data: { type, dueDate: nextDueAt, plantId, ownerId },
+      data: { type, dueDate: nextDueAt, plantId, ownerId, description },
     });
   }
 

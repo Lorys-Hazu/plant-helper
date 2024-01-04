@@ -29,7 +29,7 @@ const Tasks : React.FC = () => {
       {Boolean(error) && <p>An error has occurred</p>}
       {loading && <p>Loading...</p>}
       {ordererTasks
-        .map((task: Task) => <TaskCard key={task.id} task={task} reload={refetch}/>)
+        .map((task: Task) => <TaskCard key={task.id} task={task} reload={refetch} plant={task.plant} />)
       }
     </Flex>
   )

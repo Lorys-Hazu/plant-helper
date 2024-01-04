@@ -4,7 +4,7 @@ import { Plant } from "../../types";
 import { plantStatusesOptions } from "../../data/plantStatuses";
 import { usePatch } from "../../hooks/usePatch";
 
-type EditPlantModalProps = {
+export type EditPlantModalProps = {
   open: boolean, 
   closeModal: () => void, 
   plant: Plant, 
@@ -12,7 +12,7 @@ type EditPlantModalProps = {
 
 const EditPlantModal = ({open, closeModal, plant}: EditPlantModalProps) => {
   const patchPlantUrl = `http://localhost:3000/plants/${plant.id}`;
-  const [plantData, setPlantData] = useState<Plant & {newStatus: string}>({...plant, newStatus: plant.currentStatus.status})
+  const [plantData, setPlantData] = useState<Plant & {newStatus: string}>({...plant, newStatus: plant.currentStatus.subStatus || plant.currentStatus.status})
 
   const handleSelectChange = (value: string) => {
     setPlantData({...plantData, newStatus: value});

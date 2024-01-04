@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { Plant } from "../../types";
 import { plantStatusesOptions } from "../../data/plantStatuses";
 
-const AddPlantModal = ({open, closeModal}: {open: boolean, closeModal: () => void}) => {
+export type AddPlantModalProps = {
+  open: boolean, 
+  closeModal: () => void, 
+}
+
+const AddPlantModal = ({open, closeModal}: AddPlantModalProps) => {
   const plantRequestUrl = `http://localhost:3000/users/1/plants`;
   const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({newStatus: "HEALTHY"})
 

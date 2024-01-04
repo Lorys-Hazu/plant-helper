@@ -1,17 +1,34 @@
-import React, { useEffect } from 'react'
-import { Task } from '../types'
+import React, { useEffect, useMemo } from 'react'
+import { Plant, Task } from '../types'
 import { Badge, Button, Card } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { usePatch } from '../hooks/usePatch';
+import EditPlantModal from './modals/EditPlantModal';
+import { useModal } from '../hooks/useModals';
 
-const TaskCard = ({ task, reload }: { task: Task, reload: () => void }) => {
+const TaskCard = ({ task, reload, plant }: { task: Task, reload: () => void, plant?: Plant }) => {
   const completeTaskUrl = `http://localhost:3000/tasks/${task.id}/complete`;
   const { patchData, data } = usePatch();
+  const { addModal, closeModal } = useModal();
 
-  console.log(task)
-  
+  const shouldAskForUpdate = useMemo(() => {
+    if (!plant) {
+      return false;
+    }
+
+    const lastStatus = plant?.statusHistory.sort((a,b) => new Date(b.changedAt).getTime() - new Date(a.changedAt).getTime())[0];
+    const lastStatusDate = lastStatus.changedAt;
+    const today = new Date();
+    const lastStatusDatePlusThreeDays = new Date(lastStatusDate).setDate(new Date(lastStatusDate).getDate() + 3);
+
+    return new Date(lastStatusDatePlusThreeDays).getTime() < today.getTime();
+  }, [plant]);
+
   const handleCompleteTask = async () => {
     patchData(completeTaskUrl, {});
+    if (shouldAskForUpdate) {
+      addModal(EditPlantModal, {open: true, closeModal: closeModal, plant: plant})
+    }
   }
 
   const getBadgeColor = (dueDate: Date, isCompleted: boolean) => {

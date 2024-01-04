@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { ConfigProvider, ThemeConfig } from 'antd'
+import { ModalProvider } from './hooks/useModals'
 
 const theme: ThemeConfig = {
   "token": {
@@ -16,7 +17,9 @@ const theme: ThemeConfig = {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ConfigProvider theme={theme}>
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </ConfigProvider>
   </React.StrictMode>,
 )
