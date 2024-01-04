@@ -1,20 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Task } from '../types'
 import { Badge, Button, Card } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
+import { usePatch } from '../hooks/usePatch';
 
-const TaskCard = ({ task }: { task: Task }) => {
+const TaskCard = ({ task, reload }: { task: Task, reload: () => void }) => {
   const completeTaskUrl = `http://localhost:3000/tasks/${task.id}/complete`;
+  const { patchData, data } = usePatch();
+  
   const handleCompleteTask = async () => {
-    const res = await fetch(completeTaskUrl, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        }
-      });
-    console.log(res);
+    patchData(completeTaskUrl, {});
   }
+
+  useEffect(() => {
+    if (data) {
+      reload();
+    }
+  }, [data, reload]);
+
   return (
     <Card size="small" title={task.type} extra={<Badge count={new Date(task.dueDate).toLocaleDateString("fr-FR")}/>}>
       <Card.Grid 

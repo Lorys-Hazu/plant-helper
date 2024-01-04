@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { TaskType } from '@prisma/client';
+import { Prisma, TaskType } from '@prisma/client';
+import { StatusTransformationPipe } from 'src/pipes/StatusTransformationPipe';
 
 @Controller('users')
 export class UsersController {
@@ -23,5 +24,16 @@ export class UsersController {
   @Get(':id/plants')
   getPlants(@Param('id') id: string) {
     return this.usersService.getPlants(+id);
+  }
+
+  @Post(':id/plants')
+  addPlant(
+    @Param('id') id: string,
+    @Body(StatusTransformationPipe)
+    createPlantDto: Prisma.PlantCreateInput & {
+      currentStatus: { id: number };
+    },
+  ) {
+    return this.usersService.addPlant(+id, createPlantDto);
   }
 }

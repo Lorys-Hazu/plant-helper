@@ -1,11 +1,6 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useState, useEffect, useCallback } from "react";
 
-export const useApi = <T>(
-  url: string,
-  method: AxiosRequestConfig["method"] = "GET",
-  body?: unknown
-) => {
+export const useGet = <T>(url: string) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | unknown>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,31 +8,32 @@ export const useApi = <T>(
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const response: AxiosResponse<T> = await axios({
-        method,
-        url,
-        data: body,
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // Resolve CORS issue
-          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
         },
       });
-      setData(response.data);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const jsonData: T = await response.json();
+      setData(jsonData);
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
     }
-  }, [url, method, body]);
+  }, [url]);
 
   useEffect(() => {
     fetchData();
-  }, [url, method, body, fetchData]);
+  }, [fetchData]);
 
   const refetch = () => {
     fetchData();
-  };
+  }
 
   return { data, error, loading, refetch };
 }

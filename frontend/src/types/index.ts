@@ -24,7 +24,7 @@ export interface Plant {
 export interface PlantStatus {
   id: number;
   status: string;
-  description?: string;
+  subStatus?: string;
   affectedPlants: Plant[];
   previousStatusHistory: StatusHistory[];
   newStatusHistory: StatusHistory[];

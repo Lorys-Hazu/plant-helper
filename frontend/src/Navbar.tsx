@@ -17,7 +17,6 @@ const Navbar = () => {
   ]
 
   const keys = useLocation().pathname.split('/');
-  console.log(keys);
 
   return (
     <Menu

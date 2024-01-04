@@ -6,7 +6,6 @@ import Navbar from "./Navbar";
 
 const App = () => {
 
-
   return (
     <Router>
       <Navbar />

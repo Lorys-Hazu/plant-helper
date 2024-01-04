@@ -36,8 +36,8 @@ model Plant {
 
 model PlantStatus {
   id            Int      @id @default(autoincrement())
-  status        String   @unique
-  description   String?
+  status        String   
+  subStatus     String?  
   affectedPlants Plant[]  @relation("CurrentStatus")
   previousStatusHistory StatusHistory[] @relation("PreviousStatus")
   newStatusHistory     StatusHistory[] @relation("NewStatus")
