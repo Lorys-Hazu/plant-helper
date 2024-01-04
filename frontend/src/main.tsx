@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { ConfigProvider, ThemeConfig } from 'antd'
 import { ModalProvider } from './hooks/useModals'
+import AuthProvider from './hooks/useAuth.tsx'
 
 const theme: ThemeConfig = {
   "token": {
@@ -17,9 +18,11 @@ const theme: ThemeConfig = {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ConfigProvider theme={theme}>
-      <ModalProvider>
-        <App />
-      </ModalProvider>
+      <AuthProvider>
+        <ModalProvider>
+          <App />
+        </ModalProvider>
+      </AuthProvider>
     </ConfigProvider>
   </React.StrictMode>,
 )

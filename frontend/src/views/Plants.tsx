@@ -7,9 +7,11 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import { useModal } from '../hooks/useModals';
 import AddPlantModal from "../components/modals/AddPlantModal";
 import Loading from "../components/Loading";
+import { useAuth } from "../hooks/useAuth";
 
 const Plants = () => {
-  const plantRequestUrl = `http://localhost:3000/users/2/plants`;
+  const {user} = useAuth();
+  const plantRequestUrl = `http://localhost:3000/users/${user?.id}/plants`;
   const { data: plants, loading, error, refetch } = useGet<Plant[]>(plantRequestUrl);
 
   const {addModal, closeModal} = useModal();

@@ -4,9 +4,11 @@ import { useGet } from "../hooks/useGet";
 import TaskCard from "../components/TaskCard";
 import { useMemo } from "react";
 import Loading from "../components/Loading";
+import { useAuth } from "../hooks/useAuth";
 
 const Tasks : React.FC = () => {
-  const tasksUrl = 'http://localhost:3000/users/2/tasks?completed=false';
+  const { user } = useAuth();
+  const tasksUrl = `http://localhost:3000/users/${user?.id}/tasks?completed=false`;
   const { data: tasks, error, loading, refetch } = useGet<Task[]>(tasksUrl);
 
   const ordererTasks: Task[] = useMemo(() => tasks?.sort(

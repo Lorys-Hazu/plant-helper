@@ -3,6 +3,7 @@ import { usePost } from "../../hooks/usePost";
 import { useEffect, useState } from "react";
 import { Plant } from "../../types";
 import { plantStatusesOptions } from "../../data/plantStatuses";
+import { useAuth } from "../../hooks/useAuth";
 
 export type AddPlantModalProps = {
   open: boolean, 
@@ -10,7 +11,8 @@ export type AddPlantModalProps = {
 }
 
 const AddPlantModal = ({open, closeModal}: AddPlantModalProps) => {
-  const plantRequestUrl = `http://localhost:3000/users/2/plants`;
+  const { user } = useAuth();
+  const plantRequestUrl = `http://localhost:3000/users/${user?.id}/plants`;
   const [plantData, setPlantData] = useState<Partial<Plant & {newStatus: string}>>({newStatus: "HEALTHY"})
 
   const handleSelectChange = (value: string) => {

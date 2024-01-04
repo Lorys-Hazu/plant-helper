@@ -1,6 +1,13 @@
 import { useState, useCallback } from "react";
 
-export const usePost = <T>() => {
+type UsePostResponse<T> = {
+  data: T | null;
+  error: Error | unknown;
+  loading: boolean;
+  postData: (url: string, body: unknown) => Promise<void>;
+};
+
+export const usePost = <T>(): UsePostResponse<T> => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | unknown>(null);
   const [loading, setLoading] = useState<boolean>(false);
